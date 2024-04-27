@@ -29,6 +29,7 @@ return {
       "cpp",
       "css",
       "diff",
+      "go",
       "html",
       "java",
       "javascript",
