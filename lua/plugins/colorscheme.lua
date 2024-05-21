@@ -7,6 +7,7 @@ return {
       require("catppuccin").load()
     end,
     opts = {
+      flavor = "mocha",
       integrations = {
         transparent_background = true,
         aerial = true,
@@ -47,6 +48,7 @@ return {
   },
   { "ellisonleao/gruvbox.nvim" },
   { "rose-pine/neovim", name = "rose-pine" },
+  { "xiyaowong/transparent.nvim" },
 
   {
     "LazyVim/LazyVim",
