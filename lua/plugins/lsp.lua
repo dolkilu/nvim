@@ -133,4 +133,25 @@ return {
       }
     end,
   },
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "clangd",
+        "gopls",
+        "html-lsp",
+        "json-lsp",
+        "jq",
+        "lua-language-server",
+        "omnisharp-mono",
+        "pyright",
+        "rust-analyzer",
+        "shfmt",
+        "stylua",
+        "svelte-language-server",
+        "tailwindcss-language-server",
+        "typescript-language-server",
+      },
+    },
+  },
 }
