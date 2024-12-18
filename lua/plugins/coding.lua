@@ -1,19 +1,9 @@
 return {
   {
     "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup()
-    end,
-  },
-  {
-    "nvim-cmp",
-    opts = function(_, opts)
-      table.insert(opts.sources, 1, {
-        name = "copilot",
-        group_index = 1,
-        priority = 100,
-      })
-    end,
+    opts = { "*" },
+    RRGGBBAA = true, -- #RRGGBBAA hex codes
+    rgb_fn = true, -- CSS rgb() and rgba() functions
   },
   {
     "ThePrimeagen/refactoring.nvim",
@@ -21,6 +11,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
+    lazy = false,
     config = function()
       require("refactoring").setup()
     end,

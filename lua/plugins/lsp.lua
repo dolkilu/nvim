@@ -1,8 +1,12 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    -- dependencies = { 'saghen/blink.cmp' },
     init = function()
       local lspconfig = require("lspconfig")
+      -- local capabilities = require("blink.cmp").get_lsp_capabilities()
+      -- lspconfig['lua-ls'].setup({capabilities = capabilities})
+      lspconfig.svelte.setup({})
       lspconfig.gopls.setup({
         settings = {
           gopls = {
@@ -78,72 +82,29 @@ return {
         end,
       }
     end,
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    opts = function()
-      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-      local cmp = require("cmp")
-      local defaults = require("cmp.config.default")()
-      return {
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
-        -- snippet = {
-        -- },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<S-Tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<S-CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-          }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<C-CR>"] = function(fallback)
-            cmp.abort()
-            fallback()
-          end,
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "path" },
-          { name = "copilot" },
-        }, {
-          { name = "buffer" },
-        }),
-        formatting = {
-          format = function(_, item)
-            local icons = require("lazyvim.config").icons.kinds
-            if icons[item.kind] then
-              item.kind = icons[item.kind] .. item.kind
-            end
-            return item
-          end,
-        },
-        experimental = {
-          ghost_text = {
-            hl_group = "CmpGhostText",
-          },
-        },
-        sorting = defaults.sorting,
-      }
-    end,
+    vim.filetype.add({
+      pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
+    }),
+    setup = {
+      clangd = function(_, opts)
+        local clangd_ext_opts = LazyVim.opts("clangd_extensions.nvim")
+        require("clangd_extensions").setup(vim.tbl_deep_extend("force", clangd_ext_opts or {}, { server = opts }))
+        return false
+      end,
+    },
   },
   {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
         "clangd",
+        "codelldb",
         "gopls",
         "html-lsp",
         "json-lsp",
         "jq",
         "lua-language-server",
-        "omnisharp-mono",
+        "omnisharp",
         "pyright",
         "rust-analyzer",
         "shfmt",
@@ -151,6 +112,34 @@ return {
         "svelte-language-server",
         "tailwindcss-language-server",
         "typescript-language-server",
+      },
+    },
+  },
+  {
+    "p00f/clangd_extensions.nvim",
+    opts = {
+      inlay_hints = {
+        inline = false,
+      },
+      ast = {
+        --These require codicons (https://github.com/microsoft/vscode-codicons)
+        role_icons = {
+          type = "",
+          declaration = "",
+          expression = "",
+          specifier = "",
+          statement = "",
+          ["template argument"] = "",
+        },
+        kind_icons = {
+          Compound = "",
+          Recovery = "",
+          TranslationUnit = "",
+          PackExpansion = "",
+          TemplateTypeParm = "",
+          TemplateTemplateParm = "",
+          TemplateParamObject = "",
+        },
       },
     },
   },

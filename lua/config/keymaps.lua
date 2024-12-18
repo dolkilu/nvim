@@ -7,6 +7,8 @@ vim.keymap.set("i", "<C-Del>", "<C-o>de", { desc = "Delete after cursor" })
 
 vim.keymap.set("v", "A-Up", ":m '>+1<CR>gv=gv", { desc = "Code up" })
 vim.keymap.set("v", "A-Down", ":m '<-2<CR>gv=gv", { desc = "Code down" })
+vim.keymap.set("v", "A-e", ":m '>+1<CR>gv=gv", { desc = "Code up" })
+vim.keymap.set("v", "A-n", ":m '<-2<CR>gv=gv", { desc = "Code down" })
 
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Freeze cursor" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })

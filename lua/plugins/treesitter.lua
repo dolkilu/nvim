@@ -53,6 +53,9 @@ return {
       "vimdoc",
       "yaml",
     },
+    vim.filetype.add({
+      pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
+    }),
     incremental_selection = {
       enable = true,
       keymaps = {
