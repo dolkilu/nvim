@@ -1,82 +1,101 @@
 return {
   { "rafamadriz/friendly-snippets" },
   {
-    "nvim-cmp",
-    version = false,
+    "garymjr/nvim-snippets",
+    opts = {
+      friendly_snippets = true,
+    },
+    dependencies = { "rafamadriz/friendly-snippets" },
+  },
+  {
+    "hrsh7th/nvim-cmp",
     enabled = true,
-    -- Not all LSP servers add brackets when completing a function.
-    -- To better deal with this, LazyVim adds a custom option to cmp,
-    -- that you can configure. For example:
-    --
-    -- ```lua
-    -- opts = {
-    --   auto_brackets = { "python" }
-    -- }
-    -- ```
+    version = false,
+    event = "InsertEnter",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+    },
     opts = function(_, opts)
-      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
-      local defaults = require("cmp.config.default")()
-      if LazyVim.has("nvim-snippets") then
-        table.insert(opts.sources, { name = "snippets" })
-      end
-      return {
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
-        snippet = {
-          expand = function(args)
-            return LazyVim.cmp.expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<S-Tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<S-CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-          }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<C-CR>"] = function(fallback)
-            cmp.abort()
-            fallback()
-          end,
-        }),
-        sources = cmp.config.sources({
-          { name = "lazydev" },
-          { name = "nvim_lsp" },
-          { name = "path" },
-          -- { name = "copilot" },
-        }, {
-          { name = "buffer" },
-        }),
-        formatting = {
-          format = function(_, item)
-            local icons = require("lazyvim.config").icons.kinds
-            if icons[item.kind] then
-              item.kind = icons[item.kind] .. item.kind
-            end
-            return item
-          end,
-        },
-        experimental = {
-          ghost_text = {
-            hl_group = "CmpGhostText",
-          },
-        },
-        sorting = defaults.sorting,
-        table.insert(opts.sorting.comparators, 1, require("clangd_extensions.cmp_scores")),
-
-        -- table.insert(opts.sources, 1, {
-        --   name = "copilot",
-        --   group_index = 1,
-        --   priority = 100,
-        -- }),
+      -- local defaults = require("cmp.config.default")()
+      local auto_select = true
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+      -- opts.auto_brackets = {}
+      opts.completion = {
+        completeopt = "menu,menuone,noinsert" .. (auto_select and "" or ",noselect"),
       }
+      opts.preselect = auto_select and cmp.PreselectMode.Item or cmp.PreselectMode.None
+      opts.mapping = cmp.mapping.preset.insert({
+        ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+        ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.abort(),
+        ["<S-Tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ["<S-CR>"] = cmp.mapping.confirm({
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ["<C-CR>"] = function(fallback)
+          cmp.abort()
+          fallback()
+        end,
+      })
+      opts.sources = cmp.config.sources({
+        { name = "lazydev" },
+        { name = "nvim_lsp" },
+        { name = "path" },
+      }, {
+        { name = "buffer" },
+      })
+      -- opts.snippet = {
+      --   expand = function(item)
+      --     return LazyVim.cmp.expand(item.body)
+      --   end,
+      -- }
+      -- if LazyVim.has("nvim-snippets") then
+      --   table.insert(opts.sources, { name = "snippets" })
+      -- end
+      opts.formatting = {
+        format = function(_, item)
+          local icons = LazyVim.config.icons.kinds
+          if icons[item.kind] then
+            item.kind = icons[item.kind] .. item.kind
+          end
+
+          local widths = {
+            abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
+            menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
+          }
+
+          for key, width in pairs(widths) do
+            if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
+              item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
+            end
+          end
+
+          return item
+        end,
+      }
+      opts.experimental = {
+        -- only show ghost text when we show ai completions
+        ghost_text = vim.g.ai_cmp and {
+          hl_group = "CmpGhostText",
+        } or false,
+      }
+      opts.sorting = opts.sorting or {}
+      opts.sorting.comparators = opts.sorting.comparators or {}
+      table.insert(opts.sorting.comparators, 1, require("clangd_extensions.cmp_scores"))
+      --
+      -- table.insert(opts.sources, 1, {
+      --   name = "copilot",
+      --   group_index = 1,
+      --   priority = 100,
+      -- }),
+      return opts
     end,
   },
   {
@@ -91,16 +110,13 @@ return {
       },
     },
     enabled = false,
-
-    ---@module 'blink.cmp'
-    ---@type blink.cmp.Config
-    opts = {
+    opts = function(_, opts)
       -- 'default' for mappings similar to built-in completion
       -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
       -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
       -- see the "default configuration" section below for full documentation on how to define
       -- your own keymap.
-      keymap = {
+      opts.keymap = {
         preset = "default",
         ["<Up>"] = { "select_prev", "fallback" },
         ["<Down>"] = { "select_next", "fallback" },
@@ -112,30 +128,7 @@ return {
             cmp.show({ providers = { "snippets" } })
           end,
         },
-        --
-        --   -- note that your function will often be run in a "fast event" where most vim.api functions will throw an error
-        --   -- you may want to wrap your function in `vim.schedule` or use `vim.schedule_wrap`
-        --   ['<C-space>'] = { function(cmp) vim.schedule(function() your_behavior end) },
-        --
-      },
-      appearance = {
-        use_nvim_cmp_as_default = true,
-        nerd_font_variant = "mono",
-      },
-      sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
-        -- default = { "lsp", "path", "snippets", "buffer", "copilot" },
-        -- cmdline = {},
-      },
-      -- providers = {
-      --   name = "copilot",
-      --   module = "blink-cmp-copilot",
-      --   kind = "Copilot",
-      --   score_offset = 100,
-      --   async = true,
-      --   },
-      -- signature = { enabled = true }
-    },
-    opts_extend = { "sources.default" },
+      }
+    end,
   },
 }

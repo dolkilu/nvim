@@ -46,16 +46,19 @@ return {
       },
     },
   },
-  { "ellisonleao/gruvbox.nvim" },
-  { "rose-pine/neovim", name = "rose-pine" },
+  -- { "ellisonleao/gruvbox.nvim" },
+  -- { "rose-pine/neovim", name = "rose-pine" },
+  -- {
+  --   "folke/tokyonight.nvim",
+  --   lazy = true,
+  --   opts = { style = "moon" },
+  -- },
   { "xiyaowong/transparent.nvim" },
 
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
-      "catppuccin",
-      "rose-pine",
+      colorscheme = "catppuccin",
     },
   },
 }

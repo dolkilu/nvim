@@ -31,7 +31,6 @@ return {
       "diff",
       "go",
       "html",
-      "java",
       "javascript",
       "jsdoc",
       "json",
