@@ -100,13 +100,14 @@ return {
 		opts = {
 			ensure_installed = {
 				"clangd",
+				"csharp-language-server",
 				"codelldb",
 				"gopls",
 				"html-lsp",
 				"json-lsp",
 				"jq",
 				"lua-language-server",
-				"omnisharp",
+				--"omnisharp-mono",
 				"pyright",
 				"rust-analyzer",
 				"shfmt",
