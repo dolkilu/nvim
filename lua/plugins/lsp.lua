@@ -1,7 +1,10 @@
 return {
 	{
 		"neovim/nvim-lspconfig",
-		-- dependencies = { 'saghen/blink.cmp' },
+		dependencies = {
+			"mason.nvim",
+			-- 'saghen/blink.cmp'
+		},
 		init = function()
 			local lspconfig = require("lspconfig")
 			-- local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -18,6 +21,9 @@ return {
 						staticcheck = true,
 					},
 				},
+			})
+			lspconfig.phpactor.setup({
+				on_attach = on_attach,
 			})
 			local keys = require("lazyvim.plugins.lsp.keymaps").get()
 			-- change a keymap
@@ -48,13 +54,13 @@ return {
 			keys[#keys + 1] = {
 				"[d",
 				function()
-					vim.diagnostic.goto_next()
+					vim.diagnostic.jump({ count = 1, float = true })
 				end,
 			}
 			keys[#keys + 1] = {
 				"]d",
 				function()
-					vim.diagnostic.goto_prev()
+					vim.diagnostic.jump({ count = -1, float = true })
 				end,
 			}
 			keys[#keys + 1] = {
