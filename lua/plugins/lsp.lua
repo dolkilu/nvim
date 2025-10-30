@@ -3,94 +3,115 @@ return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			"mason.nvim",
-			-- 'saghen/blink.cmp'
+			-- "saghen/blink.cmp",
 		},
 		init = function()
-			local lspconfig = require("lspconfig")
-			-- local capabilities = require("blink.cmp").get_lsp_capabilities()
-			-- lspconfig['lua-ls'].setup({capabilities = capabilities})
-			lspconfig.svelte.setup({})
-			lspconfig.gopls.setup({
-				settings = {
-					gopls = {
-						completeUnimported = true,
-						usePlaceholders = true,
-						analyses = {
-							unusedparams = true,
+			vim.filetype.add({
+				pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
+			})
+		end,
+		opts = {
+			servers = {
+				svelte = {},
+				gopls = {
+					settings = {
+						gopls = {
+							completeUnimported = true,
+							usePlaceholders = true,
+							analyses = {
+								unusedparams = true,
+							},
+							staticcheck = true,
 						},
-						staticcheck = true,
+					},
+					-- capabilities = require("blink.cmp").get_lsp_capabilities(), -- uncomment if you use blink.cmp
+				},
+				phpactor = {},
+
+				["*"] = {
+					keys = {
+						{
+							"gd",
+							function()
+								vim.lsp.buf.definition()
+							end,
+							has = "definition",
+							desc = "Go to Definition",
+						},
+						{
+							"K",
+							function()
+								vim.lsp.buf.hover()
+							end,
+							has = "hover",
+							desc = "Hover",
+						},
+						{
+							"<leader>vws",
+							function()
+								vim.lsp.buf.workspace_symbol()
+							end,
+							has = "workspaceSymbol",
+							desc = "Workspace Symbols",
+						},
+						{
+							"<leader>vca",
+							function()
+								vim.lsp.buf.code_action()
+							end,
+							has = "codeAction",
+							desc = "Code Action",
+						},
+						{
+							"<leader>vrr",
+							function()
+								vim.lsp.buf.references()
+							end,
+							has = "references",
+							desc = "References",
+						},
+						{
+							"<leader>vrn",
+							function()
+								vim.lsp.buf.rename()
+							end,
+							has = "rename",
+							desc = "Rename",
+						},
+						{
+							"<C-h>",
+							function()
+								vim.lsp.buf.signature_help()
+							end,
+							has = "signatureHelp",
+							desc = "Signature Help",
+						},
+
+						{
+							"<leader>vd",
+							function()
+								vim.diagnostic.open_float()
+							end,
+							desc = "Line Diagnostics",
+						},
+						{
+							"[d",
+							function()
+								vim.diagnostic.jump({ count = 1, float = true })
+							end,
+							desc = "Next Diagnostic (float)",
+						},
+						{
+							"]d",
+							function()
+								vim.diagnostic.jump({ count = -1, float = true })
+							end,
+							desc = "Prev Diagnostic (float)",
+						},
 					},
 				},
-			})
-			lspconfig.phpactor.setup({
-				on_attach = on_attach,
-			})
-			local keys = require("lazyvim.plugins.lsp.keymaps").get()
-			-- change a keymap
-			keys[#keys + 1] = {
-				"gd",
-				function()
-					vim.lsp.buf.definition()
-				end,
-			}
-			keys[#keys + 1] = {
-				"K",
-				function()
-					vim.lsp.buf.hover()
-				end,
-			}
-			keys[#keys + 1] = {
-				"<leader>vws",
-				function()
-					vim.lsp.buf.workspace_symbol()
-				end,
-			}
-			keys[#keys + 1] = {
-				"<leader>vd",
-				function()
-					vim.diagnostic.open_float()
-				end,
-			}
-			keys[#keys + 1] = {
-				"[d",
-				function()
-					vim.diagnostic.jump({ count = 1, float = true })
-				end,
-			}
-			keys[#keys + 1] = {
-				"]d",
-				function()
-					vim.diagnostic.jump({ count = -1, float = true })
-				end,
-			}
-			keys[#keys + 1] = {
-				"<leader>vca",
-				function()
-					vim.lsp.buf.code_action()
-				end,
-			}
-			keys[#keys + 1] = {
-				"<leader>vrr",
-				function()
-					vim.lsp.buf.references()
-				end,
-			}
-			keys[#keys + 1] = {
-				"<leader>vrn",
-				function()
-					vim.lsp.buf.rename()
-				end,
-			}
-			keys[#keys + 1] = {
-				"<C-h>",
-				function()
-					vim.lsp.buf.signature_help()
-				end,
-			}
-		end,
-		vim.filetype.add({
-			pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
-		}),
+			},
+		},
 		setup = {
 			clangd = function(_, opts)
 				local clangd_ext_opts = LazyVim.opts("clangd_extensions.nvim")
@@ -102,7 +123,7 @@ return {
 		},
 	},
 	{
-		"williamboman/mason.nvim",
+		"mason-org/mason.nvim",
 		opts = {
 			ensure_installed = {
 				"clangd",

@@ -10,6 +10,10 @@ return {
 				},
 				view_options = {
 					show_hidden = true,
+					sort = {
+						{ "type", "asc" },
+						{ "name", "asc" },
+					},
 				},
 			})
 			-- Open parent directory in current window
