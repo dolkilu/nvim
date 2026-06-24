@@ -20,17 +20,6 @@ return {
 		rgb_fn = true, -- CSS rgb() and rgba() functions
 	},
 	{
-		"ThePrimeagen/refactoring.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		lazy = false,
-		config = function()
-			require("refactoring").setup()
-		end,
-	},
-	{
 		"christoomey/vim-tmux-navigator",
 		lazy = false,
 	},
@@ -65,5 +54,12 @@ return {
 				update_n_lines = "gsn", -- Update `n_lines`
 			},
 		},
+	},
+	{
+		"ThePrimeagen/refactoring.nvim",
+		dependencies = {
+			"lewis6991/async.nvim",
+		},
+		lazy = false,
 	},
 }

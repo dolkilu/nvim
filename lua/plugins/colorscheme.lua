@@ -1,6 +1,7 @@
 return {
 	{
 		"catppuccin/nvim",
+		enabled = false,
 		lazy = false,
 		name = "catppuccin",
 		config = function()
@@ -46,19 +47,34 @@ return {
 			},
 		},
 	},
-	-- { "ellisonleao/gruvbox.nvim" },
-	-- { "rose-pine/neovim", name = "rose-pine" },
+	{ "ellisonleao/gruvbox.nvim", enabled = true },
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		variant = "moon", -- auto, main, moon, or dawn
+		enabled = false,
+	},
 	-- {
 	--   "folke/tokyonight.nvim",
 	--   lazy = true,
 	--   opts = { style = "moon" },
 	-- },
 	{ "xiyaowong/transparent.nvim" },
+	{
+		"atdma/caelestia-nvim",
+		enabled = false,
+		lazy = false,
+		priority = 1000,
+		opts = {}, -- Automatically calls require("caelestia").setup()
+		config = function(_, opts)
+			require("caelestia").setup(opts)
+		end,
+	},
 
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = "catppuccin",
+			colorscheme = "gruvbox",
 		},
 	},
 }
