@@ -1,4 +1,5 @@
 return {
+	{ "xiyaowong/transparent.nvim" },
 	{
 		"catppuccin/nvim",
 		enabled = false,
@@ -47,19 +48,20 @@ return {
 			},
 		},
 	},
-	{ "ellisonleao/gruvbox.nvim", enabled = true },
+	{ "ellisonleao/gruvbox.nvim", enabled = false },
+
 	{
 		"rose-pine/neovim",
+		enabled = false,
 		name = "rose-pine",
 		variant = "moon", -- auto, main, moon, or dawn
-		enabled = false,
 	},
-	-- {
-	--   "folke/tokyonight.nvim",
-	--   lazy = true,
-	--   opts = { style = "moon" },
-	-- },
-	{ "xiyaowong/transparent.nvim" },
+	{
+		"folke/tokyonight.nvim",
+		enabled = false,
+		lazy = true,
+		opts = { style = "moon" },
+	},
 	{
 		"atdma/caelestia-nvim",
 		enabled = false,
@@ -70,11 +72,16 @@ return {
 			require("caelestia").setup(opts)
 		end,
 	},
-
+	{
+		"uhs-robert/oasis.nvim",
+		enabled = true,
+		lazy = false,
+		style = "sol",
+	},
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = "gruvbox",
+			colorscheme = "oasis-sol",
 		},
 	},
 }
