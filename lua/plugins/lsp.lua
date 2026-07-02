@@ -5,6 +5,22 @@ return {
 			"mason.nvim",
 			-- "saghen/blink.cmp",
 		},
+		config = function()
+			vim.lsp.enable("clangd")
+			vim.lsp.enable("csharp-language-server")
+			vim.lsp.enable("gopls")
+			vim.lsp.enable("jsonls")
+			vim.lsp.enable("marksman")
+			vim.lsp.enable("lua_ls")
+            vim.lsp.enable("stylua")
+			vim.lsp.enable("pyright")
+			vim.lsp.enable("qmlls")
+			vim.lsp.enable("ruff")
+			vim.lsp.enable("ols")
+			vim.lsp.enable("tailwindcss")
+			vim.lsp.enable("tsgo")
+			vim.lsp.enable("yamlls")
+		end,
 		init = function()
 			vim.filetype.add({
 				pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
@@ -12,7 +28,6 @@ return {
 		end,
 		opts = {
 			servers = {
-				svelte = {},
 				gopls = {
 					settings = {
 						gopls = {
@@ -26,7 +41,6 @@ return {
 					},
 					-- capabilities = require("blink.cmp").get_lsp_capabilities(), -- uncomment if you use blink.cmp
 				},
-				phpactor = {},
 
 				["*"] = {
 					keys = {
@@ -112,15 +126,6 @@ return {
 				},
 			},
 		},
-		setup = {
-			clangd = function(_, opts)
-				local clangd_ext_opts = LazyVim.opts("clangd_extensions.nvim")
-				require("clangd_extensions").setup(
-					vim.tbl_deep_extend("force", clangd_ext_opts or {}, { server = opts })
-				)
-				return false
-			end,
-		},
 	},
 	{
 		"mason-org/mason.nvim",
@@ -141,7 +146,8 @@ return {
 				"stylua",
 				"svelte-language-server",
 				"tailwindcss-language-server",
-				"typescript-language-server",
+				"tsgo",
+				"yaml-language-server",
 			},
 		},
 	},

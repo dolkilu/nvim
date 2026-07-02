@@ -56,6 +56,7 @@ return {
 				"vim",
 				"vimdoc",
 				"yaml",
+				"odin",
 			},
 			vim.filetype.add({
 				pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
@@ -79,5 +80,13 @@ return {
 				},
 			},
 		},
+		config = function()
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "odin",
+				callback = function()
+					vim.treesitter.start()
+				end,
+			})
+		end,
 	},
 }
