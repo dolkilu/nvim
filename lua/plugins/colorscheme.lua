@@ -67,7 +67,7 @@ return {
 		enabled = false,
 		lazy = false,
 		priority = 1000,
-		opts = {}, -- Automatically calls require("caelestia").setup()
+		opts = {},
 		config = function(_, opts)
 			require("caelestia").setup(opts)
 		end,
