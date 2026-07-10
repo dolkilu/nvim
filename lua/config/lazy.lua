@@ -23,6 +23,7 @@ require("lazy").setup({
 		{ import = "lazyvim.plugins.extras.coding.mini-comment" },
 		{ import = "lazyvim.plugins.extras.coding.nvim-cmp" },
 		{ import = "lazyvim.plugins.extras.dap.core" },
+		{ import = "lazyvim.plugins.extras.editor.dial" },
 		{ import = "lazyvim.plugins.extras.editor.fzf" },
 		{ import = "lazyvim.plugins.extras.editor.harpoon2" },
 		{ import = "lazyvim.plugins.extras.editor.mini-files" },
