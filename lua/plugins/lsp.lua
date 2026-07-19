@@ -12,7 +12,7 @@ return {
 			vim.lsp.enable("jsonls")
 			vim.lsp.enable("marksman")
 			vim.lsp.enable("lua_ls")
-            vim.lsp.enable("stylua")
+			vim.lsp.enable("stylua")
 			vim.lsp.enable("pyright")
 			vim.lsp.enable("qmlls")
 			vim.lsp.enable("ruff")
