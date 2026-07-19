@@ -1,18 +1,4 @@
 return {
-	-- {
-	--   "stevearc/conform.nvim",
-	--   opts = function(_, opts)
-	--     opts.formatters.stylua = {
-	--       inherit = true,
-	--       command = "stylua",
-	--       args = {
-	--         "--indent-width",
-	--         "4",
-	--       },
-	--     }
-	--     return opts
-	--   end,
-	-- },
 	{
 		"norcalli/nvim-colorizer.lua",
 		opts = { "*" },
@@ -20,17 +6,12 @@ return {
 		rgb_fn = true, -- CSS rgb() and rgba() functions
 	},
 	{
-		"christoomey/vim-tmux-navigator",
-		lazy = false,
-	},
-	{
 		"nvim-mini/mini.surround",
-		recommended = true,
 		keys = function(_, keys)
 			-- Populate the keys based on the user's options
 			local opts = LazyVim.opts("mini.surround")
 			local mappings = {
-				{ opts.mappings.add, desc = "Add Surrounding", mode = { "n", "v" } },
+				{ opts.mappings.add, desc = "Add Surrounding", mode = { "n", "x" } },
 				{ opts.mappings.delete, desc = "Delete Surrounding" },
 				{ opts.mappings.find, desc = "Find Right Surrounding" },
 				{ opts.mappings.find_left, desc = "Find Left Surrounding" },
