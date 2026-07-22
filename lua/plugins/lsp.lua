@@ -6,6 +6,7 @@ return {
 			-- "saghen/blink.cmp",
 		},
 		config = function()
+			vim.lsp.enable("bashls")
 			vim.lsp.enable("clangd")
 			vim.lsp.enable("csharp-language-server")
 			vim.lsp.enable("gopls")
@@ -131,6 +132,7 @@ return {
 		"mason-org/mason.nvim",
 		opts = {
 			ensure_installed = {
+				"bash-language-server",
 				"clangd",
 				"csharp-language-server",
 				"codelldb",
@@ -142,6 +144,7 @@ return {
 				"pyright",
 				"qmlls",
 				"rust-analyzer",
+				"shellcheck",
 				"shfmt",
 				"stylua",
 				"svelte-language-server",
